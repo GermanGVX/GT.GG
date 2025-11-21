@@ -1,22 +1,43 @@
 require('dotenv').config();
 const express = require('express');
-const mysql = require('mysql2/promise'); // Usamos /promise para async/await
+const mysql = require('mysql2/promise'); // Importante: /promise
 const cors = require('cors');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Configuración de la base de datos
-const dbConfig = {
-    uri: process.env.DATABASE_URL,
-    multipleStatements: true // Permitir múltiples consultas a la vez
-};
-
-// Función auxiliar para obtener conexión
+// --- FUNCIÓN DE CONEXIÓN BLINDADA ---
 async function getConnection() {
-    return await mysql.createConnection(dbConfig.uri);
+    // 1. Verificación de seguridad: ¿Existe la URL?
+    if (!process.env.DATABASE_URL) {
+        console.error("❌ ERROR FATAL: La variable DATABASE_URL no existe o está vacía.");
+        throw new Error("Falta configuración de base de datos");
+    }
+
+    // 2. Intentamos conectar usando la propiedad 'uri' que acepta mysql2
+    try {
+        const connection = await mysql.createConnection({
+            uri: process.env.DATABASE_URL,
+            multipleStatements: true, // Necesario para scripts complejos
+            ssl: { rejectUnauthorized: false } // Truco para que no falle por certificados en la nube
+        });
+        return connection;
+    } catch (error) {
+        console.error("❌ Error al crear la conexión técnica:", error.message);
+        throw error;
+    }
 }
+
+// Probamos la conexión al iniciar el servidor para ver si funciona
+getConnection()
+    .then(async (conn) => {
+        console.log("✅ ¡Conexión exitosa con MySQL en el arranque!");
+        await conn.end(); // Cerramos esta conexión de prueba
+    })
+    .catch(err => {
+        console.error("⚠️ Advertencia: El servidor inicia, pero la BD no responde:", err.message);
+    });
 
 // --- RUTA: GUARDAR BUILD COMPLETA ---
 app.post('/api/builds', async (req, res) => {
