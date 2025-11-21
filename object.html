@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Items de LoL</title>
+  <link rel="stylesheet" href="object.css">
+</head>
+<body>
+  <h1>Legendary Items</h1>
+  <div class="items-grid" id="itemsGrid"></div>
+
+  <!-- Modal para mostrar stats -->
+  <div class="modal" id="itemModal">
+    <div class="modal-content">
+  <div class="modal-content">
+    <span id="closeModal">&times;</span>
+    <h2 id="itemName"></h2>
+    <img id="itemImage" />
+    <p id="itemDescription"></p>
+    <p id="itemGold"></p>
+    <div id="item-stats"></div> <!-- Aquí va la tabla -->
+  </div>
+      
+    </div>
+  </div>
+  <div class="volver" onclick="window.history.back();">← Volver</div>
+
+<script src="object.js"></script>
+</body>
+</html>

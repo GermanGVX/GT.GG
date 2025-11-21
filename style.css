@@ -10,30 +10,87 @@ body {
   padding: 15px;
   display: flex;
   align-items: center;
+  justify-content: space-between; /* separa logo e input */
+  flex-wrap: wrap; /* permite saltar a la línea en móvil */
 }
 
 .navbar h1 {
-  color: #ffffff;
-  margin-right: 700px
-
+  margin: 0;
+  font-size: 20px;
 }
 
 .navbar input {
+  flex: 1;                 /* Que el input ocupe el espacio disponible */
+  min-width: 200px;        /* Ancho mínimo para que no se achique demasiado */
   padding: 8px;
   border-radius: 5px;
   border: none;
-  margin-right: 10px;
 }
-
 .navbar button {
   padding: 8px 12px;
   border: none;
-  background: #ff1616;
+  background: linear-gradient(135deg, #af1e1e, #f63bca);
   color: white;
   border-radius: 5px;
   cursor: pointer;
 }
 
+.search-wrapper {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  min-width: 200px;
+  max-width: 400px;
+  
+  width: 350px; /* ancho total del input + botón */
+  margin: 0 auto; /* centra horizontalmente */
+}
+.search-container {
+  position: relative;
+  flex: 1; /* que ocupe todo el espacio disponible */
+}
+#search {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: white;
+  background-color: #2a3640;
+}
+.search-wrapper button {
+  padding: 8px 12px;
+  border: none;
+  background: linear-gradient(135deg, #af1e1e, #f63bca);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.sugerencias {
+  position: absolute;
+  top: 100%; /* justo debajo del input */
+  left: 0;
+  right: 0; /* para que ocupe todo el ancho del contenedor padre */
+  background: #1c252c;
+  border: 1px solid #444;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  color: white;
+  font-size: 14px;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+/* estilos para cada sugerencia */
+.sugerencias div {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.sugerencias div:hover {
+  background-color: #af1e1e;
+}
 .card {
   background: #1c252c;
   padding: 20px;
@@ -41,8 +98,8 @@ body {
   border-radius: 10px;
 }
 .logo {
-    height: 100px;
-    margin-right: 700px;
+  height: 100px;
+  margin-right: 20px; /* ajusta según necesites */
 }
 
 .card-header {
@@ -83,12 +140,19 @@ body {
   border-top: 1px solid rgba(255,255,255,0.2);
 }
 
-.runes-primary, .runes-secondary {
+.runes-primary{
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: -90px;
 }
+.runes-secondary{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 
 .runes-primary img {
   width: 50px;
@@ -129,6 +193,20 @@ body {
   padding: 4px;
 }
 
+.Items_S {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.Items_S img {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background: #1c2b45;
+  padding: 4px;
+}
+
 .arrow {
   font-size: 20px;
   color: #aaa;
@@ -157,15 +235,29 @@ body {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* Hover */
 #botones button:hover {
-  background: linear-gradient(135deg, #1e40af, #3b82f6);
+  background: linear-gradient(135deg, #af1e1e, #f63bca);
   transform: scale(1.05);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
 }
 
+/* Efecto de click */
 #botones button:active {
   transform: scale(0.95);
 }
+
+/* Estado ACTIVO (botón seleccionado) */
+#botones button.active {
+  background: linear-gradient(135deg, #e63946, #f3722c); /* 🔥 colores activos */
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+
+
+
 #resultados p {
   text-align: center;
   font-size: 18px;
@@ -178,4 +270,642 @@ body {
   display: inline-block; /* hace que el auto-margin funcione */
   box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
 }
+.spells {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.spells img {
+  width: 35px;
+  height: 35px;
+  border-radius: 12px;
+  border: 2px solid #444;
+  background-color: #1c1c1c;
+  padding: 4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.spells img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 0, 230, 0.7);
+  border-color: rgb(255, 0, 204);
+}
+.items img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 0, 230, 0.7);
+  border-color: rgb(255, 0, 204);
+}
+.Items_S img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 0, 230, 0.7);
+  border-color: rgb(255, 0, 204);
+}
+.runes-primary img:hover {
+  transform: scale(1.1);
+  border-radius: 50%; 
+  box-shadow: 0 0 12px rgba(255, 0, 230, 0.7);
+  border-color: rgb(255, 0, 204);
+  background-color: #1a1a1a;
+}
+.runes-secondary img:hover {
+  transform: scale(1.1);
+    border-radius: 50%; 
+  box-shadow: 0 0 12px rgba(255, 0, 230, 0.7);
+  border-color: rgb(255, 0, 204);
+  background-color: #1a1a1a;
+}
+.shards img:hover {
+  transform: scale(1.1);
+  border-radius: 50%; 
+  box-shadow: 0 0 12px rgba(255, 0, 230, 0.7);
+  border-color: rgb(255, 0, 204);
+  background-color: #1a1a1a;
+}
+
+#resetDePagina {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  top: 2px;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  background: transparent;
+  z-index: 9999;
+}
+
+
+
+
+
+
+/* Carrucel Inicio */
+
+
+/* Carrusel tipo Coverflow con tu estilo */
+.carrusel {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tarjetas individuales */
+.cuadro {
+  position: absolute;
+  width: 220px;
+  height: 320px;
+  top: 50%;
+  left: 50%;
+  border-radius: 12px;
+  background: #1c1c2b;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backface-visibility: hidden;
+}
+
+.cuadro img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.cuadro:hover {
+  box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+}
+
+.cuadro:hover img {
+  transform: scale(1.05);
+}
+
+/* Posiciones del efecto coverflow */
+.cuadro.pos0 {
+  transform: translate(calc(-50% - 570px), -50%) scale(0.6);
+  opacity: 0.2;
+  z-index: 1;
+}
+.cuadro.pos1 {
+  transform: translate(calc(-50% - 415px), -50%) scale(0.75);
+  opacity: 0.4;
+  z-index: 2;
+}
+.cuadro.pos2 {
+  transform: translate(calc(-50% - 220px), -50%) scale(0.9);
+  opacity: 0.7;
+  z-index: 3;
+}
+.cuadro.pos3 {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  z-index: 5;
+}
+.cuadro.pos4 {
+  transform: translate(calc(-50% + 220px), -50%) scale(0.9);
+  opacity: 0.7;
+  z-index: 3;
+}
+.cuadro.pos5 {
+  transform: translate(calc(-50% + 415px), -50%) scale(0.75);
+  opacity: 0.4;
+  z-index: 2;
+}
+.cuadro.pos6 {
+  transform: translate(calc(-50% + 570px), -50%) scale(0.6);
+  opacity: 0.2;
+  z-index: 1;
+}
+
+
+
+
+/* Carrucel final */
+
+
+
+
+
+.titulo {
+      font-family: 'Cinzel', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #FFD700; /* dorado */
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      text-align: center;
+      margin: 20px 0;
+      transition: transform 0.3s ease;
+      cursor: default;
+      user-select: none;
+      z-index: 9999;
+}
+h1 {
+  font-family: "Cinzel", serif; /* fuente elegante */
+  font-size: 4em;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  background: linear-gradient(to top, #8b6d2f 0%, #f2d16b 40%, #fff3b0 60%, #b8860b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  
+  /* Sombras para simular relieve */
+  text-shadow: 
+    -2px -2px 3px #000,       /* borde oscuro arriba izquierda */
+     2px  2px 3px #000,       /* borde oscuro abajo derecha */
+     0px  0px 8px rgba(0,0,0,0.8), /* brillo sombra difusa */
+     0px  0px 15px rgba(0,0,0,0.6);
+}
+
+
+
+
+  
+.botones-home {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  gap: 20px;               /* espacio entre botones */
+  margin-top: 100px;        /* separación desde arriba */
+}
+
+.btn-home {
+  text-decoration: none;
+  background: linear-gradient(135deg, #f63bca, #af1e1e);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.btn-home:hover {
+  background: #8a5ad8;
+  transform: scale(1.05);
+}
+
+.corner-icon {
+  top: 35px;
+  right: 35px;
+  z-index: 10000; /* siempre por encima */
+  transition: transform 0.2s ease, filter 0.2s ease;
+  margin-right: 10px;
+}
+
+.corner-icon img {
+  width: 60px;   /* ajustá el tamaño */
+  cursor: pointer;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+
+}
+
+.corner-icon:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgb(255, 0, 102));
+}
+.corner-icon2 {
+  top: 35px;
+  right: 60px;
+  z-index: 10000; /* siempre por encima */
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.corner-icon2 img {
+  width: 45px;   /* ajustá el tamaño */
+  cursor: pointer;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+}
+
+.corner-icon2:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgb(255, 0, 102));
+}
+
+.btn-stats {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(41, 128, 185, 0.6);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    user-select: none;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+  }
+  .btn-stats:hover {
+    background-color: #3498db;
+    box-shadow: 0 6px 16px rgba(52, 152, 219, 0.8);
+    transform: translateY(-3px);
+  }
+  .btn-stats:active {
+    background-color: #1c5980;
+    box-shadow: 0 2px 6px rgba(28, 89, 128, 0.7);
+    transform: translateY(0);
+  }
+  .btn-stats:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px #85c1e9;
+  }
+
+  
+/* 📱 Adaptación para celulares */
+@media (max-width: 768px) {
+  /* Navbar */
+  
+  /* 📌 Navbar contenedor */
+  .navbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px 16px !important;
+    flex-wrap: wrap !important;         /* permite que el buscador baje */
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    background: #1c252c; /* si quieres fondo, cámbialo aquí */
+  }
+
+  /* Logo (lado izquierdo) */
+  .logo {
+    flex: 0 0 auto;
+    width: 80px;
+    height: auto;
+    margin: 0;
+  }
+  .logo img { display: block; width: 100%; height: auto; }
+
+  /* Si envolviste los iconos en <div class="icons"> */
+  .icons {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* Si NO envolviste, también apuntamos a los anchors directos dentro de .navbar */
+  .icons .corner-icon, .icons .corner-icon2,
+  .navbar > .corner-icon, .navbar > .corner-icon2,
+  .navbar a.corner-icon, .navbar a.corner-icon2 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  .corner-icon img,
+  .corner-icon2 img {
+    width: 28px !important;
+    height: 28px !important;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* BUSCADOR: siempre en la fila de abajo, centrado y sin sobreponerse */
+  .search-wrapper {
+    order: 2 !important;           /* fuerza que baje debajo del header */
+    flex: 1 1 100% !important;     /* ocupa toda la fila */
+    margin-top: 10px !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* contenedor interno del input para limitar ancho */
+  .search-container {
+    width: 100%;
+    max-width: 520px; /* ajusta el ancho máximo del buscador */
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  /* input ocupa todo el ancho del contenedor, sin salirse ni superponer */
+  .search-container input {
+    width: 100% !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    box-sizing: border-box !important;
+    background: rgba(255,255,255,0.05);
+    color: #ddd;
+  }
+
+  .search-wrapper button {
+    margin-left: 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(45deg,#ff007f,#ff4d4d);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+
+  /* 🎠 Carrusel responsive */
+  .carrusel {
+    height: 300px; /* más bajo en móvil */
+  }
+
+  .cuadro {
+    width: 140px;
+    height: 200px;
+    font-size: 14px;
+  }
+
+  /* Coverflow adaptado */
+  .cuadro.pos0 {
+    transform: translate(calc(-50% - 220px), -50%) scale(0.5);
+    opacity: 0.2;
+  }
+  .cuadro.pos1 {
+    transform: translate(calc(-50% - 150px), -50%) scale(0.65);
+    opacity: 0.4;
+  }
+  .cuadro.pos2 {
+    transform: translate(calc(-50% - 80px), -50%) scale(0.8);
+    opacity: 0.7;
+  }
+  .cuadro.pos3 {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  .cuadro.pos4 {
+    transform: translate(calc(-50% + 80px), -50%) scale(0.8);
+    opacity: 0.7;
+  }
+  .cuadro.pos5 {
+    transform: translate(calc(-50% + 150px), -50%) scale(0.65);
+    opacity: 0.4;
+  }
+  .cuadro.pos6 {
+    transform: translate(calc(-50% + 220px), -50%) scale(0.5);
+    opacity: 0.2;
+  }
+
+
+
+  /* 📌 Títulos */
+  .titulo, h1 {
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  /* 📌 Botones */
+  #botones {
+    gap: 10px;
+  }
+
+  #botones button {
+    width: 80%;
+    max-width: 250px;
+    text-align: center;
+  }
+
+  .btn-home {
+    font-size: 14px;
+    padding: 10px 18px;
+  }
+
+  /* 📌 Imágenes de campeones */
+  .card {
+    margin: 10px auto;
+    padding: 12px;
+    width: 90%;
+  }
+
+  .champion-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* 📌 Objetos y runas */
+  .items img,
+  .Items_S img,
+  .spells img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .runes-primary img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .runes-secondary img {
+    width: 28px;
+    height: 28px;
+  }
+
+a:focus,
+button:focus,
+input:focus,
+img:focus,
+.corner-icon:focus,
+.corner-icon2:focus,
+.btn-home:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+a:active,
+button:active,
+img:active,
+.corner-icon:active,
+.corner-icon2:active,
+.btn-home:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+}
+
+
+/* 📱 Extra para pantallas muy chicas (menos de 400px) */
+@media (max-width: 400px) {
+  .navbar {
+    padding: 10px;
+  }
+
+  .search-wrapper {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .search-wrapper button {
+    width: 100%;
+  }
+
+  #botones button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .titulo,
+  h1 {
+    font-size: 1.2em;
+  }
+}
+
+
+
+/* --- Estilo del selector de runas --- */
+select {
+  background: linear-gradient(145deg, #1a1a2e, #23233a); /* degradado suave */
+  color: #f5f5f5;              
+  padding: 10px 14px;
+  border: 2px solid #ff4081; 
+  border-radius: 12px;      
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  margin-bottom: 15px; 
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+select:hover {
+  background: linear-gradient(145deg, #242443, #2e2e4d);
+  border-color: #ff70a3;
+  transform: translateY(-2px); /* efecto “levantar” */
+  box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+}
+
+select:focus {
+  border-color: #ff9bc5; /* borde más brillante al seleccionar */
+  box-shadow: 0 0 8px rgba(255, 64, 129, 0.8);
+}
+
+select option {
+  background-color: #1e1e2f;
+  color: #ffffff;
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* otra forma de botones runas */
+
+
+
+.rune-options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+.rune-btn {
+  background: linear-gradient(145deg, #1e1e2f, #2a2a40);
+  color: #fff;
+  border: 2px solid #ff4081;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: 500;
+}
+
+.rune-btn:hover {
+  background: linear-gradient(145deg, #29293d, #333354);
+  border-color: #ff70a3;
+  transform: translateY(-2px);
+}
+
+.rune-btn.active {
+  background: #ff4081;
+  color: #fff;
+  border-color: #ff70a3;
+  box-shadow: 0 0 8px rgba(255, 64, 129, 0.6);
+}
+.section1 h3 {
+  font-size: 1.2rem;
+  color: #ff4d6d; /* rojo llamativo */
+  margin-bottom: 8px;
+  font-weight: bold;
+  border-left: 4px solid #ff4d6d; 
+  padding-left: 10px;
+}
+
+.section1 p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #d1d5db; /* gris clarito para buen contraste */
+  margin: 0;
+  padding: 12px 15px;
+  background: linear-gradient(135deg, #1f2937, #111827); 
+  border: 1px solid #2d3748;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.section1 p:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+
 

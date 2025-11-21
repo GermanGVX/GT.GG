@@ -1,0 +1,248 @@
+/* 🎨 General */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0f1519;
+  color: white;
+  margin: 0;
+}
+
+/* 🔹 Navbar */
+.navbar {
+  background: #1c252c;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* 🔹 Para que se acomode en pantallas chicas */
+  position: relative;
+}
+
+.logo {
+  height: 100px;
+  margin-right: 20px;
+}
+
+.titulo {
+  font-family: 'Cinzel', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: #ff00ee;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+  text-align: center;
+  margin: 20px 0;
+  transition: transform 0.3s ease;
+  cursor: default;
+  user-select: none;
+  z-index: 9999;
+}
+
+/* 🔹 Separador */
+.roles-separator {
+  width: 90%;
+  height: 2px;
+  background-color: #444;
+  margin: 30px auto;
+  border: none;
+  border-radius: 2px;
+}
+
+/* 🔹 Wrapper */
+.roles-wrapper {
+  background-color: #1e2a36;
+  padding: 30px;
+  border-radius: 12px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1200px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* 🔹 Contenedor de roles */
+.roles-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* 🔹 Tarjetas base */
+.role-card,
+.role-card2,
+.role-card3,
+.role-card4,
+.role-card5,
+.role-card6 {
+  flex: 1 1 auto; /* 🔹 antes era 160px, así entran más */
+  min-width: 120px; /* 🔹 evita que se hagan demasiado chicos */
+  max-width: 200px;
+  height: 80px;
+  border: 2px solid black;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.3s;
+  position: relative;
+}
+
+.role-card img,
+.role-card2 img,
+.role-card3 img,
+.role-card4 img,
+.role-card5 img,
+.role-card6 img {
+  width: 35px;
+  height: 35px;
+}
+
+.role-card:hover,
+.role-card2:hover,
+.role-card3:hover,
+.role-card4:hover,
+.role-card5:hover,
+.role-card6:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* 🔹 Tooltips */
+.role-card .tooltip,
+.role-card2 .tooltip,
+.role-card3 .tooltip,
+.role-card4 .tooltip,
+.role-card5 .tooltip,
+.role-card6 .tooltip {
+  visibility: hidden;
+  opacity: 0;
+  width: 220px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s;
+  font-size: 14px;
+}
+
+.role-card .tooltip::after,
+.role-card2 .tooltip::after,
+.role-card3 .tooltip::after,
+.role-card4 .tooltip::after,
+.role-card5 .tooltip::after,
+.role-card6 .tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.role-card:hover .tooltip,
+.role-card2:hover .tooltip,
+.role-card3:hover .tooltip,
+.role-card4:hover .tooltip,
+.role-card5:hover .tooltip,
+.role-card6:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* 🎨 Colores y gradientes (mantengo tus estilos) */
+.assassin { background: #ff4040; }
+.assault { background: #ffd84d; }
+.mage { background: #1e1eff; }
+.tank { background: #10c478; }
+
+.Aegis { background: linear-gradient(135deg, #10c478, #1e1eff); }
+.Spellbade { background: linear-gradient(135deg, #ffd84d, #1e1eff); }
+.Berserker { background: linear-gradient(135deg, #10c478, #ffd84d); }
+.Warlock { background: linear-gradient(135deg, #ff4040, #1e1eff); }
+.Duelist { background: linear-gradient(135deg, #ff4040, #ffd84d); }
+.Rogue { background: linear-gradient(135deg, #10c478, #ff4040); }
+
+.Emberlord { background: linear-gradient(135deg, #10c478, #1e1eff, #ffd84d); }
+.Arcanist { background: linear-gradient(135deg, #10c478, #1e1eff, #ff4040); }
+.Revenant { background: linear-gradient(135deg, #10c478, #ffd84d, #ff4040); }
+.Duskbane { background: linear-gradient(135deg, #ff4040, #1e1eff, #ffd84d); }
+
+.Elite { background: linear-gradient(135deg, #ff4040, #1e1eff, #ffd84d, #10c478); }
+
+.Peeler { background: #f703ff; }
+.Vanguard { background: #02390c; }
+
+.Playmaker { background: linear-gradient(135deg, #f703ff59, #01470f); }
+
+/* 🔹 Títulos secundarios */
+.h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #ff00ee;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+  text-align: center;
+  margin: 20px 0;
+}
+
+.h5 {
+  font-family: ui-rounded;
+  font-size: 24px;
+  color: #ffffff;
+  text-align: center;
+  margin: 5px 0;
+}
+
+/* 📱 Responsive */
+@media (max-width: 1024px) {
+  .titulo { font-size: 38px; }
+  .roles-container { gap: 20px; }
+}
+
+@media (max-width: 768px) {
+  .titulo { font-size: 32px; }
+  .roles-container { gap: 15px; }
+  .role-card,
+  .role-card2,
+  .role-card3,
+  .role-card4,
+  .role-card5,
+  .role-card6 {
+    flex: 1 1 45%; /* 2 por fila */
+    height: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .titulo { font-size: 26px; }
+  .role-card,
+  .role-card2,
+  .role-card3,
+  .role-card4,
+  .role-card5,
+  .role-card6 {
+    flex: 1 1 100%; /* 1 por fila */
+    height: 65px;
+  }
+  .role-card img,
+  .role-card2 img,
+  .role-card3 img,
+  .role-card4 img,
+  .role-card5 img,
+  .role-card6 img {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+
+
+

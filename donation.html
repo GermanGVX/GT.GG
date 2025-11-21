@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Donaciones - GT</title>
+  <link rel="stylesheet" href="donation.css">
+  <style>
+    /* Estilo para el botón secreto */
+    .boton-secreto-admin {
+      position: fixed; /* Se queda fijo aunque bajes la página */
+      top: 0;
+      right: 0;
+      width: 50px;     /* Tamaño del área clickeable */
+      height: 50px;
+      background: transparent; /* Invisible */
+      z-index: 9999;   /* Por encima de todo */
+      cursor: default; /* Mantiene el cursor normal para no levantar sospechas */
+    }
+  </style>
+</head>
+<body>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet" />
+
+  <h1>Donaciones</h1>
+
+  <!-- Botón oculto que va a login.html -->
+  <a href="login.html" class="boton-secreto-admin" title=""></a>
+
+  <div class="opciones-donacion">
+    <a href="https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=d0e978339fe448d1a22be2bc787bd8ab" target="_blank" rel="noopener noreferrer" class="opcion">
+      Mercado Pago - Suscripción
+      <p>Doná con suscripción mensual</p>
+    </a>
+    <a href="https://link.mercadopago.com.ar/gg1gt" target="_blank" rel="noopener noreferrer" class="opcion">
+      Mercado Pago - Donación única (1.49% comisión)
+      <p>Doná con comisión reducida</p>
+    </a>
+    <a href="https://ceneka.net/GermanGVX" target="_blank" rel="noopener noreferrer" class="opcion">
+      Otras formas de donación
+    </a>
+    <a href="https://streamelements.com/germangvx/tip" target="_blank" rel="noopener noreferrer" class="opcion">
+      PayPal
+      <p>Donacion unica</p>
+    </a>
+    <div class="opcion">
+      <p>Donación manual vía transferencia bancaria</p>
+      <div class="cvu">CVU: 0000003100032623471190</div>
+      <div class="cbu">CBU: 0140000703100037827199</div>
+      <p>(Copiá el CVU/CBU para hacer la transferencia)</p>
+    </div>
+  </div>
+
+  <div class="volver" onclick="window.history.back();">← Volver</div>
+</body>
+</html>

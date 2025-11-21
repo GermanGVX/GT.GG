@@ -1,0 +1,117 @@
+body {
+  background-color: #121212;
+  color: #eee;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.level-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.level-btn {
+  background-color: #2c3e50;
+  border: none;
+  color: #ecf0f1;
+  padding: 8px 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  user-select: none;
+}
+
+.level-btn:hover {
+  background-color: #34495e;
+  transform: scale(1.05);
+}
+
+.level-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #2980b9;
+}
+
+.level-btn.active {
+  background-color: #2980b9;
+  box-shadow: 0 4px 10px rgba(41, 128, 185, 0.7);
+  transform: scale(1.1);
+  color: white;
+  cursor: default;
+}
+
+
+.stats-table, .cooldown-table {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  border-collapse: collapse;
+  background-color: #1c252c;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.7);
+}
+
+.stats-table th, .stats-table td, .cooldown-table td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
+
+.stats-table th {
+  background-color: #2a3640;
+  color: #FFD700;
+  width: 40%;
+}
+
+.cooldown-table {
+  max-width: 300px;
+  margin: 0 auto 40px auto;
+}
+
+.cooldown-table td:first-child {
+  font-weight: bold;
+  width: 50px;
+}
+#build-selector {
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(41, 128, 185, 0.6);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+  appearance: none; /* Quitar estilo por defecto */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  width: 220px;
+}
+#build-selector:hover {
+  background-color: #3498db;
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.8);
+}
+#build-selector:focus {
+  box-shadow: 0 0 0 3px #85c1e9;
+}
+
+.volver {
+margin-top: 40px;
+font-size: 18px;
+color: #FFD700;
+text-decoration: underline;
+cursor: pointer;
+user-select: none;
+text-align: center;
+}
+.volver:hover {
+  text-shadow: 0 0 8px #ffcc00;
+}

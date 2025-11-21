@@ -1,0 +1,81 @@
+/* Contenedor principal de la build */
+.build-container {
+    background: rgba(16, 20, 25, 0.9); /* Fondo oscuro semitransparente */
+    border: 1px solid #c8aa6e; /* Dorado LoL */
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: center;
+    color: #f0e6d2;
+}
+
+/* Título del editor */
+.build-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #3c3c41;
+    padding-bottom: 10px;
+}
+
+.input-nombre-build {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #5b5a56;
+    color: #f0e6d2;
+    font-size: 1.2rem;
+    padding: 5px;
+    width: 60%;
+}
+
+/* Los 6 Slots de Items */
+.item-slots-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.item-slot {
+    width: 64px;
+    height: 64px;
+    background-color: #010a13;
+    border: 2px solid #3c3c41;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.item-slot:hover {
+    border-color: #c8aa6e;
+    box-shadow: 0 0 10px rgba(200, 170, 110, 0.5);
+}
+
+/* Imagen dentro del slot */
+.item-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none; /* Oculta por defecto si no hay item */
+}
+
+/* Botón de guardar elegante */
+.btn-hextech {
+    background: linear-gradient(180deg, #1e2328 0%, #1e2328 100%);
+    border: 2px solid #c8aa6e;
+    color: #cdbe91;
+    padding: 10px 30px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+}
+
+.btn-hextech:hover {
+    background: #c8aa6e;
+    color: #1e2328;
+    box-shadow: 0 0 15px #c8aa6e;
+}

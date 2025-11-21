@@ -1,0 +1,97 @@
+body {
+  background: linear-gradient(135deg, #0f0f0f, #1e1e1e);
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background: #1c252c;
+  padding: 15px;
+  display: flex;           /* Asegura que los hijos estén en fila */
+  align-items: center;     /* Centra verticalmente */
+  /* gap: 10px;               Espacio entre elementos */
+  position: relative;
+}
+.roles-separator {
+  width: 90%;
+  height: 2px;
+  background-color: #444; /* gris oscuro, combina con tu fondo */
+  margin: 30px auto;      /* separa hacia arriba y abajo */
+  border: none;
+  border-radius: 2px;
+}
+.roles-wrapper {
+  background-color: #1e2a36;   /* Fondo diferente al de la página */
+  padding: 30px;
+  border-radius: 12px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1200px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+
+.logo {
+  height: 100px;
+  margin-right: 20px; /* ajusta según necesites */
+}
+
+.titulo1 {
+      font-family: 'Cinzel', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: #ff00ee; /* dorado */
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+      text-align: center;
+      margin: 20px 0;
+}
+.credit-box {
+  max-width: 600px;
+  margin: auto;
+  padding: 30px;
+  background: rgba(25, 25, 35, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Categorías */
+.credit-box h2 {
+  font-size: 1.5rem;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #00d4ff;
+  border-bottom: 2px solid #00d4ff;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+/* Nombres */
+.credit-box a {
+  display: block;
+  font-size: 1.2rem;
+  margin: 8px 0;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.credit-box a:hover {
+  color: #ff00cc;
+  transform: scale(1.05);
+  text-shadow: 0 0 8px #ff00cc;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

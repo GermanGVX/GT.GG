@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Restringido</title>
+    <link rel="stylesheet" href="style.css"> <!-- Usamos tu estilo base -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #091428; /* Color fondo LoL */
+            color: #c8aa6e;
+        }
+        .login-box {
+            background: #010a13;
+            padding: 40px;
+            border: 1px solid #c8aa6e;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(200, 170, 110, 0.2);
+        }
+        input {
+            display: block;
+            margin: 15px auto;
+            padding: 10px;
+            width: 100%;
+            background: #1e2328;
+            border: 1px solid #3c3c41;
+            color: white;
+        }
+        button {
+            background: #c8aa6e;
+            border: none;
+            padding: 10px 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-box">
+        <h2>ACCESO ADMINISTRADOR</h2>
+        <input type="text" id="user" placeholder="Usuario">
+        <input type="password" id="pass" placeholder="Contraseña">
+        <button onclick="iniciarSesion()">ENTRAR</button>
+        <p id="error-msg" style="color: red; display: none;">Acceso denegado</p>
+    </div>
+
+    <script>
+        async function iniciarSesion() {
+            const user = document.getElementById('user').value;
+            const pass = document.getElementById('pass').value;
+
+            try {
+                const res = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    // Si el login es correcto, guardamos una "marca" en el navegador
+                    sessionStorage.setItem('esAdmin', 'true');
+                    // Y redirigimos a la página de administración
+                    window.location.href = 'admin.html';
+                } else {
+                    document.getElementById('error-msg').style.display = 'block';
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error de conexión con el servidor");
+            }
+        }
+    </script>
+</body>
+</html>

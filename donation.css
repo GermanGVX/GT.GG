@@ -1,0 +1,86 @@
+body {
+      background-color: #0f1519;
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #FFD700;
+      margin-bottom: 40px;
+      text-align: center;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+    .opciones-donacion {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      max-width: 400px;
+      width: 100%;
+    }
+    .opcion {
+  display: block; /* para que el <a> se comporte como bloque */
+  background: #1c252c;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+  color: white;
+  text-decoration: none; /* quitar subrayado */
+}
+.opcion:hover {
+  background-color: #af1e1e;
+}
+    .opcion a {
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+      display: block;
+    }
+    .opcion p {
+  margin: 10px 0 0 0;
+  font-size: 14px;
+  color: #ccc;
+}
+
+    .cvu {
+      font-family: monospace;
+      font-size: 18px;
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+      user-select: all;
+      margin-top: 10px;
+    }
+    .cbu {
+      font-family: monospace;
+      font-size: 18px;
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+      user-select: all;
+      margin-top: 10px;
+    }
+    .volver {
+      margin-top: 40px;
+      font-size: 18px;
+      color: #FFD700;
+      text-decoration: underline;
+      cursor: pointer;
+      user-select: none;
+      text-align: center;
+    }
+    .volver:hover {
+      color: #fff;
+    }
