@@ -7,24 +7,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- FUNCIÓN DE CONEXIÓN BLINDADA ---
+// --- FUNCIÓN DE CONEXIÓN CORREGIDA ---
 async function getConnection() {
-    // 1. Verificación de seguridad: ¿Existe la URL?
     if (!process.env.DATABASE_URL) {
-        console.error("❌ ERROR FATAL: La variable DATABASE_URL no existe o está vacía.");
+        console.error("❌ Error: No hay DATABASE_URL");
         throw new Error("Falta configuración de base de datos");
     }
 
-    // 2. Intentamos conectar usando la propiedad 'uri' que acepta mysql2
     try {
-        const connection = await mysql.createConnection({
-            uri: process.env.DATABASE_URL,
-            multipleStatements: true, // Necesario para scripts complejos
-            ssl: { rejectUnauthorized: false } // Truco para que no falle por certificados en la nube
-        });
+        // TRUCO: Le agregamos '?multipleStatements=true' a la URL de Railway
+        // Esto permite ejecutar el script de creación de tablas sin errores.
+        const connectionString = process.env.DATABASE_URL.includes('?')
+            ? process.env.DATABASE_URL + '&multipleStatements=true'
+            : process.env.DATABASE_URL + '?multipleStatements=true';
+
+        // Pasamos el texto de la URL directamente, SIN llaves {}
+        const connection = await mysql.createConnection(connectionString);
+        
         return connection;
     } catch (error) {
-        console.error("❌ Error al crear la conexión técnica:", error.message);
+        console.error("❌ Error conectando:", error.message);
         throw error;
     }
 }
