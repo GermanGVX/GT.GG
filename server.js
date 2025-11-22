@@ -7,6 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 🔴 AGREGA ESTA LÍNEA AQUÍ MISMO:
+// Esto le dice al servidor: "Sirve todos los archivos (html, css, js, img) que están en esta carpeta"
+app.use(express.static(__dirname)); 
+
 // --- FUNCIÓN DE CONEXIÓN (VERSIÓN PARSEADA) ---
 async function getConnection() {
     const dbUrlString = process.env.DATABASE_URL;
