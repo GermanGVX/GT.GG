@@ -18,6 +18,16 @@
     <div id="resultado"></div>
   </main>
 
+  <script>
+    // ✅ Verificar si estamos logueados como admin
+    const isAdmin = sessionStorage.getItem('esAdmin') === 'true';
+
+    // ✅ Si no estamos logueados, redirigir a login.html
+    if (!isAdmin) {
+      window.location.href = 'login.html';
+    }
+  </script>
+
   <script src="app_champion_admin.js"></script>
 </body>
 </html>
