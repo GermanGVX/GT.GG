@@ -2,13 +2,21 @@ require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2/promise'); 
 const cors = require('cors');
+const session = require('express-session'); // Añadido
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
+app.use(session({
+  secret: 'tu-secreto-aqui', // Cambia esto por algo más seguro
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // Cambia a true si usas HTTPS
+}));
 
 // 🔴 LÍNEA MÁGICA: Servir archivos estáticos (HTML, CSS, JS, Imágenes)
-// Esto hace que al entrar a tu web, se vea el index.html y funcionen los estilos.
 app.use(express.static(__dirname)); 
 
 // --- FUNCIÓN DE CONEXIÓN ---
@@ -97,6 +105,107 @@ app.get('/setup-db', async (req, res) => {
     }
 });
 
+// --- API: LOGIN ---
+app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
+    let connection;
+    try {
+        connection = await getConnection();
+        const [rows] = await connection.query('SELECT * FROM admin_users WHERE username = ? AND password = ?', [username, password]);
+        if (rows.length > 0) {
+            req.session.loggedIn = true; // Guardar sesión
+            res.json({ success: true });
+        } else {
+            res.status(401).json({ success: false });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    } finally {
+        if (connection) connection.end();
+    }
+});
+
+// --- API: VERIFICAR SESIÓN ---
+app.get('/api/check-session', (req, res) => {
+    res.json({ loggedIn: req.session && req.session.loggedIn });
+});
+
+// --- API: CERRAR SESIÓN ---
+app.post('/api/logout', (req, res) => {
+    req.session = null; // Destruir la sesión
+    res.json({ success: true });
+});
+
+// --- API: OBTENER CAMPEONES ---
+app.get('/api/campeones', async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+        const [rows] = await connection.query('SELECT id, nombre_campeon FROM campeones ORDER BY nombre_campeon');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    } finally {
+        if (connection) connection.end();
+    }
+});
+
+// --- API: OBTENER ROLES ---
+app.get('/api/roles', async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+        const [rows] = await connection.query('SELECT id, nombre_rol FROM roles ORDER BY nombre_rol');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    } finally {
+        if (connection) connection.end();
+    }
+});
+
+// --- API: OBTENER RUNAS ---
+app.get('/api/runas', async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+        const [rows] = await connection.query('SELECT id, nombre_runa FROM runas ORDER BY nombre_runa');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    } finally {
+        if (connection) connection.end();
+    }
+});
+
+// --- API: OBTENER SPELLS ---
+app.get('/api/spells', async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+        const [rows] = await connection.query('SELECT id, nombre_spell FROM spells ORDER BY nombre_spell');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    } finally {
+        if (connection) connection.end();
+    }
+});
+
+// --- API: OBTENER ITEMS ---
+app.get('/api/items', async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+        const [rows] = await connection.query('SELECT id, nombre_item FROM items ORDER BY nombre_item');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    } finally {
+        if (connection) connection.end();
+    }
+});
+
 // --- API: GUARDAR BUILD ---
 app.post('/api/builds', async (req, res) => {
     let connection;
@@ -104,32 +213,42 @@ app.post('/api/builds', async (req, res) => {
         connection = await getConnection();
         await connection.beginTransaction(); 
 
-        const { nombre_build, campeon_data, rol_nombre, items, runas } = req.body;
+        const { nombre_build, campeon_id, rol_id, runas, spells, items } = req.body;
 
-        if (!campeon_data || !rol_nombre) throw new Error("Faltan datos");
+        if (!campeon_id || !rol_id) throw new Error("Faltan datos");
 
-        await connection.query('INSERT IGNORE INTO roles (nombre_rol) VALUES (?)', [rol_nombre]);
-        const [rolRes] = await connection.query('SELECT id FROM roles WHERE nombre_rol = ?', [rol_nombre]);
-        
-        await connection.query('INSERT IGNORE INTO campeones (campeon_id_api, nombre_campeon) VALUES (?, ?)', [campeon_data.id_api, campeon_data.nombre]);
-        const [campRes] = await connection.query('SELECT id FROM campeones WHERE campeon_id_api = ?', [campeon_data.id_api]);
-        
-        const [buildRes] = await connection.query('INSERT INTO builds (nombre_build, campeon_id, rol_id) VALUES (?, ?, ?)', [nombre_build, campRes[0].id, rolRes[0].id]);
+        const [buildRes] = await connection.query('INSERT INTO builds (nombre_build, campeon_id, rol_id) VALUES (?, ?, ?)', [nombre_build, campeon_id, rol_id]);
         const buildId = buildRes.insertId;
 
-        if (items && items.length > 0) {
-            for (const item of items) {
-                await connection.query('INSERT IGNORE INTO items (item_id_api, nombre_item) VALUES (?, ?)', [item.id_api, item.nombre]);
-                const [itemDb] = await connection.query('SELECT id FROM items WHERE item_id_api = ?', [item.id_api]);
-                await connection.query('INSERT INTO build_items (build_id, item_id, tipo, orden) VALUES (?, ?, ?, ?)', [buildId, itemDb[0].id, item.tipo || 'Core', item.orden || 1]);
+        // Insertar runas
+        if (runas && runas.primarias) {
+            for (const runaId of runas.primarias) {
+                await connection.query('INSERT INTO build_runes (build_id, runa_id, tipo) VALUES (?, ?, "Primaria")', [buildId, runaId]);
+            }
+        }
+        if (runas && runas.secundarias) {
+            for (const runaId of runas.secundarias) {
+                await connection.query('INSERT INTO build_runes (build_id, runa_id, tipo) VALUES (?, ?, "Secundaria")', [buildId, runaId]);
             }
         }
 
-        if (runas && runas.length > 0) {
-            for (const runa of runas) {
-                await connection.query('INSERT IGNORE INTO runas (runa_id_api, nombre_runa) VALUES (?, ?)', [runa.id_api, runa.nombre]);
-                const [runaDb] = await connection.query('SELECT id FROM runas WHERE runa_id_api = ?', [runa.id_api]);
-                await connection.query('INSERT INTO build_runes (build_id, runa_id, tipo) VALUES (?, ?, ?)', [buildId, runaDb[0].id, runa.tipo || 'Primaria']);
+        // Insertar spells
+        if (spells) {
+            for (const spellId of spells) {
+                await connection.query('INSERT INTO build_spells (build_id, spell_id) VALUES (?, ?)', [buildId, spellId]);
+            }
+        }
+
+        // Insertar items
+        if (items && items.core) {
+            for (let i = 0; i < items.core.length; i++) {
+                const itemId = items.core[i];
+                await connection.query('INSERT INTO build_items (build_id, item_id, tipo, orden) VALUES (?, ?, "Core", ?)', [buildId, itemId, i]);
+            }
+        }
+        if (items && items.situacionales) {
+            for (const itemId of items.situacionales) {
+                await connection.query('INSERT INTO build_items (build_id, item_id, tipo) VALUES (?, ?, "Situacional")', [buildId, itemId]);
             }
         }
 
@@ -138,6 +257,78 @@ app.post('/api/builds', async (req, res) => {
 
     } catch (error) {
         if (connection) await connection.rollback(); 
+        res.status(500).json({ error: error.message });
+    } finally {
+        if (connection) connection.end();
+    }
+});
+
+// --- API: MODIFICAR BUILD ---
+app.put('/api/builds/:id', async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+        await connection.beginTransaction();
+
+        const { id } = req.params;
+        const { nombre_build, campeon_id, rol_id, runas, spells, items } = req.body;
+
+        await connection.query('UPDATE builds SET nombre_build = ?, campeon_id = ?, rol_id = ? WHERE id = ?', [nombre_build, campeon_id, rol_id, id]);
+
+        // Eliminar datos anteriores
+        await connection.query('DELETE FROM build_runes WHERE build_id = ?', [id]);
+        await connection.query('DELETE FROM build_spells WHERE build_id = ?', [id]);
+        await connection.query('DELETE FROM build_items WHERE build_id = ?', [id]);
+
+        // Insertar nuevos datos (mismo código que en POST)
+        if (runas && runas.primarias) {
+            for (const runaId of runas.primarias) {
+                await connection.query('INSERT INTO build_runes (build_id, runa_id, tipo) VALUES (?, ?, "Primaria")', [id, runaId]);
+            }
+        }
+        if (runas && runas.secundarias) {
+            for (const runaId of runas.secundarias) {
+                await connection.query('INSERT INTO build_runes (build_id, runa_id, tipo) VALUES (?, ?, "Secundaria")', [id, runaId]);
+            }
+        }
+
+        if (spells) {
+            for (const spellId of spells) {
+                await connection.query('INSERT INTO build_spells (build_id, spell_id) VALUES (?, ?)', [id, spellId]);
+            }
+        }
+
+        if (items && items.core) {
+            for (let i = 0; i < items.core.length; i++) {
+                const itemId = items.core[i];
+                await connection.query('INSERT INTO build_items (build_id, item_id, tipo, orden) VALUES (?, ?, "Core", ?)', [id, itemId, i]);
+            }
+        }
+        if (items && items.situacionales) {
+            for (const itemId of items.situacionales) {
+                await connection.query('INSERT INTO build_items (build_id, item_id, tipo) VALUES (?, ?, "Situacional")', [id, itemId]);
+            }
+        }
+
+        await connection.commit();
+        res.json({ success: true, message: 'Actualizado' });
+
+    } catch (error) {
+        if (connection) await connection.rollback();
+        res.status(500).json({ error: error.message });
+    } finally {
+        if (connection) connection.end();
+    }
+});
+
+// --- API: ELIMINAR BUILD ---
+app.delete('/api/builds/:id', async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+        await connection.query('DELETE FROM builds WHERE id = ?', [req.params.id]);
+        res.json({ success: true, message: 'Eliminado' });
+    } catch (error) {
         res.status(500).json({ error: error.message });
     } finally {
         if (connection) connection.end();
@@ -161,30 +352,6 @@ app.get('/api/builds/search', async (req, res) => {
     } finally {
         if (connection) connection.end();
     }
-});
-
-// --- API: LOGIN ---
-app.post('/api/login', async (req, res) => {
-    const { username, password } = req.body;
-    let connection;
-    try {
-        connection = await getConnection();
-        const [rows] = await connection.query('SELECT * FROM admin_users WHERE username = ? AND password = ?', [username, password]);
-        if (rows.length > 0) {
-            res.json({ success: true });
-        } else {
-            res.status(401).json({ success: false });
-        }
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    } finally {
-        if (connection) connection.end();
-    }
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor web listo en puerto ${PORT}`);
 });
 
 // --- API: DETALLES DE UNA BUILD ---
@@ -241,6 +408,16 @@ app.get('/api/builds/:buildId', async (req, res) => {
       ORDER BY br.tipo
     `, [buildId]);
 
+    // Consultar spells de la build
+    const [spellRows] = await connection.query(`
+      SELECT 
+        s.nombre_spell,
+        s.spell_id_api
+      FROM build_spells bs
+      JOIN spells s ON bs.spell_id = s.id
+      WHERE bs.build_id = ?
+    `, [buildId]);
+
     // Agrupar items y runas
     const items = { core: [], situacionales: [] };
     itemRows.forEach(item => {
@@ -262,10 +439,13 @@ app.get('/api/builds/:buildId', async (req, res) => {
       }
     });
 
+    const spells = spellRows.map(s => ({ nombre_spell: s.nombre_spell, id_api: s.spell_id_api }));
+
     res.json({
       ...build,
       items,
-      runas
+      runas,
+      spells
     });
 
   } catch (error) {
@@ -273,4 +453,9 @@ app.get('/api/builds/:buildId', async (req, res) => {
   } finally {
     if (connection) connection.end();
   }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor web listo en puerto ${PORT}`);
 });
