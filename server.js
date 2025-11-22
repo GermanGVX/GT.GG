@@ -1,13 +1,13 @@
 require('dotenv').config();
 const express = require('express');
-const mysql = require('mysql2/promise'); // Importante: /promise
+const mysql = require('mysql2/promise'); 
 const cors = require('cors');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- FUNCIÓN DE CONEXIÓN (ARREGLADA) ---
+// --- FUNCIÓN DE CONEXIÓN QUE NO FALLA ---
 async function getConnection() {
     const dbUrl = process.env.DATABASE_URL;
 
@@ -17,14 +17,13 @@ async function getConnection() {
     }
 
     try {
-        // TRUCO: Para que funcione el script de tablas, necesitamos 'multipleStatements'
-        // Si la URL ya tiene signos de pregunta (?), usamos '&', si no, usamos '?'
-        const connectionString = dbUrl.includes('?') 
-            ? dbUrl + '&multipleStatements=true&dateStrings=true' 
-            : dbUrl + '?multipleStatements=true&dateStrings=true';
-
-        // 🟢 CAMBIO CLAVE: Pasamos el texto directo, SIN llaves {}
-        const connection = await mysql.createConnection(connectionString);
+        // TRUCO MAESTRO: Usamos createConnection con la URL PERO forzamos las opciones extra
+        // Esta sintaxis es la única que garantiza que Railway acepte la conexión
+        const connection = await mysql.createConnection({
+            uri: dbUrl, 
+            multipleStatements: true, 
+            ssl: { rejectUnauthorized: false } // Esto es lo que faltaba para que no de error 500
+        });
         
         return connection;
     } catch (error) {
@@ -33,7 +32,7 @@ async function getConnection() {
     }
 }
 
-// Probamos la conexión al iniciar
+// Prueba de conexión al iniciar
 getConnection()
     .then(async (conn) => {
         console.log("✅ ¡Conexión exitosa a MySQL en Railway!");
@@ -118,7 +117,6 @@ app.post('/api/builds', async (req, res) => {
             nombre_build, campeon_data, rol_nombre, items, runas 
         } = req.body;
 
-        // Validaciones simples
         if (!campeon_data || !rol_nombre) throw new Error("Faltan datos del campeón o rol");
 
         // 1. ROL
