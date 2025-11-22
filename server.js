@@ -7,25 +7,34 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- FUNCIÓN DE CONEXIÓN QUE NO FALLA ---
+// --- FUNCIÓN DE CONEXIÓN (VERSIÓN PARSEADA) ---
 async function getConnection() {
-    const dbUrl = process.env.DATABASE_URL;
+    const dbUrlString = process.env.DATABASE_URL;
 
-    if (!dbUrl) {
+    if (!dbUrlString) {
         console.error("❌ ERROR: No hay variable DATABASE_URL.");
         throw new Error("Falta configuración de base de datos");
     }
 
     try {
-        // TRUCO MAESTRO: Usamos createConnection con la URL PERO forzamos las opciones extra
-        // Esta sintaxis es la única que garantiza que Railway acepte la conexión
-        const connection = await mysql.createConnection({
-            uri: dbUrl, 
-            multipleStatements: true, 
-            ssl: { rejectUnauthorized: false } // Esto es lo que faltaba para que no de error 500
-        });
-        
+        // 1. Convertimos la URL de texto a un Objeto manejable
+        const dbUrl = new URL(dbUrlString);
+
+        // 2. Creamos la configuración extrayendo los datos de la URL
+        const config = {
+            host: dbUrl.hostname,
+            user: dbUrl.username,
+            password: dbUrl.password,
+            database: dbUrl.pathname.slice(1), // Quitamos la barra inicial '/'
+            port: dbUrl.port,
+            multipleStatements: true, // Obligatorio para el script de setup
+            ssl: { rejectUnauthorized: false } // Obligatorio para Railway
+        };
+
+        // 3. Conectamos usando la configuración estándar
+        const connection = await mysql.createConnection(config);
         return connection;
+
     } catch (error) {
         console.error("❌ Error técnico al conectar:", error.message);
         throw error;

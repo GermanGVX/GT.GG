@@ -55,7 +55,7 @@
             const pass = document.getElementById('pass').value;
 
             try {
-                const res = await fetch('http://localhost:3000/api/login', {
+                const res = await fetch('https://gtgg-production.up.railway.app/api', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username: user, password: pass })

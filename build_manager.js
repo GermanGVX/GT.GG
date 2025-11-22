@@ -3,7 +3,7 @@
 // No interfiere con el carrusel ni otras animaciones de app.js.
 
 // Configuración
-const API_URL = 'http://localhost:3000/api/builds';
+const API_URL = 'https://gtgg-production.up.railway.app/api';
 
 // Estado global de la build que se está armando
 window.buildActual = {
