@@ -119,17 +119,17 @@ function mostrarBuild(campeonId, rol) {
           <h3>Runas</h3>
           <div class="runes-primary">
             ${data.runas.primarias.map(runa => 
-              `<img src="https://ddragon.leagueoflegends.com/cdn/img/${runa.icono}" alt="${runa.nombre}">`
+              `<img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${runa.id_api}.png" alt="${runa.nombre}">`
             ).join("")}
           </div>
           <div class="runes-secondary">
             ${data.runas.secundarias.map(runa => 
-              `<img src="https://ddragon.leagueoflegends.com/cdn/img/${runa.icono}" alt="${runa.nombre}">`
+              `<img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${runa.id_api}.png" alt="${runa.nombre}">`
             ).join("")}
           </div>
           <div class="shards">
             ${data.runas.fragmentos.map(shard => 
-              `<img src="https://ddragon.leagueoflegends.com/cdn/img/${shard.icono}" alt="${shard.nombre}">`
+              `<img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Statmods/${shard.id_api}.png" alt="${shard.nombre}">`
             ).join("")}
           </div>
         </div>
@@ -151,7 +151,7 @@ function mostrarBuild(campeonId, rol) {
 
         <div class="section1">
           <h3>Rol: ${buildData.nombre_rol}</h3>
-          <p>${buildData.descripcion_rol || "Sin información disponible para este rol."}</p>
+          <p>${buildData.descripcion || "Sin información disponible para este rol."}</p>
         </div>
       </div>
 
