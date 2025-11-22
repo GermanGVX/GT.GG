@@ -186,3 +186,91 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor web listo en puerto ${PORT}`);
 });
+
+// --- API: DETALLES DE UNA BUILD ---
+app.get('/api/builds/:buildId', async (req, res) => {
+  const { buildId } = req.params;
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    // Consultar la build
+    const [buildRows] = await connection.query(`
+      SELECT 
+        b.nombre_build,
+        b.fecha,
+        c.nombre_campeon,
+        c.campeon_id_api,
+        r.nombre_rol,
+        r.descripcion
+      FROM builds b
+      LEFT JOIN campeones c ON b.campeon_id = c.id
+      LEFT JOIN roles r ON b.rol_id = r.id
+      WHERE b.id = ?
+    `, [buildId]);
+
+    if (buildRows.length === 0) {
+      return res.status(404).json({ error: "Build no encontrada" });
+    }
+
+    const build = buildRows[0];
+
+    // Consultar items de la build
+    const [itemRows] = await connection.query(`
+      SELECT 
+        i.nombre_item,
+        i.item_id_api,
+        bi.tipo,
+        bi.orden
+      FROM build_items bi
+      JOIN items i ON bi.item_id = i.id
+      WHERE bi.build_id = ?
+      ORDER BY bi.tipo, bi.orden
+    `, [buildId]);
+
+    // Consultar runas de la build
+    const [runeRows] = await connection.query(`
+      SELECT 
+        r.nombre_runa,
+        r.runa_id_api,
+        br.tipo
+      FROM build_runes br
+      JOIN runas r ON br.runa_id = r.id
+      WHERE br.build_id = ?
+      ORDER BY br.tipo
+    `, [buildId]);
+
+    // Agrupar items y runas
+    const items = { core: [], situacionales: [] };
+    itemRows.forEach(item => {
+      if (item.tipo === 'Situacional') {
+        items.situacionales.push({ nombre: item.nombre_item, id_api: item.item_id_api });
+      } else {
+        items.core.push({ nombre: item.nombre_item, id_api: item.item_id_api });
+      }
+    });
+
+    const runas = { primarias: [], secundarias: [], fragmentos: [] };
+    runeRows.forEach(runa => {
+      if (runa.tipo === 'Primaria') {
+        runas.primarias.push({ nombre: runa.nombre_runa, id_api: runa.runa_id_api });
+      } else if (runa.tipo === 'Secundaria') {
+        runas.secundarias.push({ nombre: runa.nombre_runa, id_api: runa.runa_id_api });
+      } else if (runa.tipo === 'Fragmento') {
+        runas.fragmentos.push({ nombre: runa.nombre_runa, id_api: runa.runa_id_api });
+      }
+    });
+
+    res.json({
+      ...build,
+      items,
+      runas
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    if (connection) connection.end();
+  }
+});
