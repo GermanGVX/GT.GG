@@ -55,10 +55,10 @@
             const pass = document.getElementById('pass').value;
 
             try {
-                const res = await fetch('https://gtgg-production.up.railway.app/api', {
+                const res = await fetch('https://gtgg-production.up.railway.app/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user: user, pass: pass })
+                    body: JSON.stringify({ username: user, password: pass }) // Cambié user/pass a username/password
                 });
 
                 const data = await res.json();
@@ -67,7 +67,7 @@
                     // Si el login es correcto, guardamos una "marca" en el navegador
                     sessionStorage.setItem('esAdmin', 'true');
                     // Y redirigimos a la página de administración
-                    window.location.href = 'admin.html';
+                    window.location.href = 'admin_index.html';
                 } else {
                     document.getElementById('error-msg').style.display = 'block';
                 }
