@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Build - Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Crear Build</h1>
+  <form id="buildForm">
+    <label for="nombre_build">Nombre de la Build:</label>
+    <input type="text" id="nombre_build" required>
+
+    <label for="campeon">Campeón:</label>
+    <select id="campeon" required></select>
+
+    <label for="rol">Rol:</label>
+    <select id="rol" required></select>
+
+    <label for="runas_primarias">Runas Primarias:</label>
+    <select id="runas_primarias" multiple></select>
+
+    <label for="runas_secundarias">Runas Secundarias:</label>
+    <select id="runas_secundarias" multiple></select>
+
+    <label for="spells">Spells:</label>
+    <select id="spells" multiple></select>
+
+    <label for="items_core">Items Core:</label>
+    <select id="items_core" multiple></select>
+
+    <label for="items_situacionales">Items Situacionales:</label>
+    <select id="items_situacionales" multiple></select>
+
+    <button type="submit">Guardar Build</button>
+  </form>
+
+  <script src="crear_build.js"></script>
+</body>
+</html>

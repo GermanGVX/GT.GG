@@ -1,5 +1,6 @@
 let builds = {};
 let versionActual = '';
+let isAdmin = false; // Por defecto, no es admin
 
 // Mapeo de nombres amigables (opcional, si lo usas)
 const nombreAId = {
@@ -92,6 +93,26 @@ function renderBotones(campeonId) {
   }
 }
 
+
+
+function crearBuild(campeonId, rol) {
+  window.location.href = `crear_build.html?campeon=${campeonId}&rol=${rol}`;
+}
+
+function modificarBuild(campeonId, rol) {
+  window.location.href = `modificar_build.html?campeon=${campeonId}&rol=${rol}`;
+}
+
+function eliminarBuild(campeonId, rol) {
+  if (confirm("¿Estás seguro de que quieres eliminar esta build?")) {
+    fetch(`/api/builds/${buildData.id}`, { method: 'DELETE' })
+      .then(() => location.reload());
+  }
+}
+
+
+
+
 // Función para mostrar una build específica
 function mostrarBuild(campeonId, rol) {
   const buildData = builds[rol][0]; // Tomamos la primera build del rol
@@ -158,8 +179,17 @@ function mostrarBuild(campeonId, rol) {
       <div style="text-align: center; margin-top: 15px;">
         <button class="btn-stats" onclick="window.location.href='stats.html?champ=${campeonId}'">Stats</button>
       </div>
-      `;
+      `;if (isAdmin) {
+  resultados.innerHTML += `
+    <div style="text-align: center; margin-top: 15px;">
+      <button class="btn-admin" onclick="crearBuild('${campeonId}', '${rol}')">Crear Build</button>
+      <button class="btn-admin" onclick="modificarBuild('${campeonId}', '${rol}')">Modificar Build</button>
+      <button class="btn-admin" onclick="eliminarBuild('${campeonId}', '${rol}')">Eliminar Build</button>
+    </div>
+  `;
+}
     })
+    
     .catch(err => console.error("Error al cargar detalles de la build:", err));
 }
 
@@ -172,6 +202,11 @@ function obtenerCampeonDeURL() {
 // Cargar builds y mostrar la build del campeón seleccionado
 async function inicializarPagina() {
   await getVersion();
+
+  // Verificar si es admin
+  const response = await fetch('/api/check-session');
+  const session = await response.json();
+  isAdmin = session.loggedIn;
 
   const campeonId = obtenerCampeonDeURL();
   if (!campeonId) {

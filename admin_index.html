@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GT</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+// Verificar si el usuario está logueado
+fetch('/api/check-session')
+  .then(response => response.json())
+  .then(data => {
+    if (!data.loggedIn) {
+      window.location.href = 'login.html';
+    }
+  });
+</script>
+</head>
+<body>
+<header class="navbar">
+  <!-- Logo -->
+  <img src="imagenes/icono.png" alt="GT Logo" class="logo">
+
+  <!-- Buscador -->
+  <div class="search-wrapper">
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Buscar campeón..."
+        autocomplete="off" 
+        autocorrect="off" 
+        autocapitalize="off" 
+        spellcheck="false"/>
+      <div id="sugerencias" class="sugerencias"></div>
+    </div>
+    <button onclick="buscarCampeon()">Buscar</button>
+  </div>
+
+  <!-- Iconos -->
+  <div class="icons">
+    <a href="creditos.html" class="corner-icon2">
+      <img src="imagenes/creditos.png" alt="Ir a otra página">
+    </a>
+    <a href="donation.html" class="corner-icon">
+      <img src="imagenes/donation.png" alt="Ir a otra página">
+    </a>
+  </div>
+</header>
+  <h1 class="titulo">League Of Legends</h1>
+   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet" />
+  <main>
+    <div id="contenedorBuild"></div>
+    <!-- Aquí se muestran los botones dinámicos -->
+    <div id="botones"></div>
+
+
+    <div id="resetDePagina"></div>
+    <!-- Aquí se muestran las builds -->
+    <div id="resultado"></div>
+
+
+   <div id="carrusel" class="carrusel">
+  <div class="cuadro" data-index="0"></div>
+  <div class="cuadro" data-index="1"></div>
+  <div class="cuadro" data-index="2"></div>
+  <div class="cuadro" data-index="3"></div>
+  <div class="cuadro" data-index="4"></div>
+  <div class="cuadro" data-index="5"></div>
+  <div class="cuadro" data-index="6"></div>
+
+</div>
+<div class="botones-home">
+  <a href="roles.html" class="btn-home">CLASSES</a>
+  <a href="object.html" class="btn-home">OBJECT</a>
+  <!-- <a href="mathes.html" class="btn-home">MATHES</a> -->
+</div>
+
+  </main>
+
+  <script src="build_manager.js"></script>
+  <script src="app.js"></script>
+  <!-- Botón de logout -->
+<div class="logout" onclick="logout()">Logout</div>
+
+<script>
+function logout() {
+  fetch('/api/logout', { method: 'POST' })
+    .then(() => window.location.href = 'login.html');
+}
+</script>
+</body>
+</html>
+
