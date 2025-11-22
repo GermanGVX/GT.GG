@@ -58,7 +58,7 @@
                 const res = await fetch('https://gtgg-production.up.railway.app/api', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: user, password: pass })
+                    body: JSON.stringify({ user: user, pass: pass })
                 });
 
                 const data = await res.json();
