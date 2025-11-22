@@ -57,7 +57,10 @@ function renderBotones(campeonId) {
   const botonesDiv = document.getElementById("botones");
   botonesDiv.innerHTML = "";
   if (!builds || Object.keys(builds).length === 0) {
-    botonesDiv.innerHTML = "<p>⚠️ No hay builds disponibles para este campeón.</p>";
+    botonesDiv.innerHTML = `
+      <p>⚠️ No hay builds disponibles para este campeón.</p>
+      ${isAdmin ? `<button class="btn-admin" onclick="crearBuild('${campeonId}', 'Nuevo Rol')">Crear Build</button>` : ''}
+    `;
     return;
   }
 
