@@ -194,7 +194,6 @@ function obtenerCampeonDeURL() {
 }
 
 // Cargar builds y mostrar la build del campeón seleccionado
-// Cargar builds y mostrar la build del campeón seleccionado
 async function inicializarPagina() {
   await getVersion();
 
