@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GT</title>
+  <title>GT - Admin</title>
   <link rel="stylesheet" href="style.css">
   <script>
 // Verificar si el usuario está logueado
@@ -44,18 +44,16 @@ fetch('/api/check-session')
     </a>
   </div>
 </header>
-  <h1 class="titulo">League Of Legends</h1>
+  <h1 class="titulo">League Of Legends - Admin</h1>
    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet" />
   <main>
     <div id="contenedorBuild"></div>
     <!-- Aquí se muestran los botones dinámicos -->
     <div id="botones"></div>
 
-
     <div id="resetDePagina"></div>
     <!-- Aquí se muestran las builds -->
     <div id="resultado"></div>
-
 
    <div id="carrusel" class="carrusel">
   <div class="cuadro" data-index="0"></div>
@@ -65,27 +63,25 @@ fetch('/api/check-session')
   <div class="cuadro" data-index="4"></div>
   <div class="cuadro" data-index="5"></div>
   <div class="cuadro" data-index="6"></div>
-
 </div>
 <div class="botones-home">
   <a href="roles.html" class="btn-home">CLASSES</a>
   <a href="object.html" class="btn-home">OBJECT</a>
-  <!-- <a href="mathes.html" class="btn-home">MATHES</a> -->
 </div>
 
   </main>
 
-  <script src="build_manager.js"></script>
-  <script src="app.js"></script>
   <!-- Botón de logout -->
-<div class="logout" onclick="logout()">Logout</div>
+  <div class="logout" onclick="logout()">Logout</div>
 
-<script>
+  <script src="build_manager.js"></script>
+  <script src="app_admin_index.js"></script> <!-- Archivo nuevo -->
+
+  <script>
 function logout() {
   fetch('/api/logout', { method: 'POST' })
     .then(() => window.location.href = 'login.html');
 }
-</script>
+  </script>
 </body>
 </html>
-
