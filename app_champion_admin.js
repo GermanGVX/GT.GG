@@ -194,13 +194,12 @@ function obtenerCampeonDeURL() {
 }
 
 // Cargar builds y mostrar la build del campeón seleccionado
+// Cargar builds y mostrar la build del campeón seleccionado
 async function inicializarPagina() {
   await getVersion();
 
-  // Verificar si es admin
-  const response = await fetch('/api/check-session');
-  const session = await response.json();
-  isAdmin = session.loggedIn;
+  // Verificar si es admin usando sessionStorage
+  isAdmin = sessionStorage.getItem('esAdmin') === 'true';
 
   const campeonId = obtenerCampeonDeURL();
   if (!campeonId) {
